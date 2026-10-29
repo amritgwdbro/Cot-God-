@@ -1,0 +1,533 @@
+-- [[ 👑 COT SPAMMER V3 - STATIC BOTTOM-LEFT TOGGLE EDITION 👑 ]] --
+
+local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local TextChatService = game:GetService("TextChatService")
+
+local player = Players.LocalPlayer
+local playerGui = player:WaitForChild("PlayerGui")
+
+-- Purana GUI hatao
+pcall(function()
+	if playerGui:FindFirstChild("ControlCenterGui") then
+		playerGui["ControlCenterGui"]:Destroy()
+	end
+end)
+
+-- ==================== CONFIG (RP NAME & BIO) ====================
+local RP_NAME = "🚨cot Spammer🚨"
+local RP_BIO  = "CoT | Developments🥴"
+local emojis = {"👑", "🔥", "🥶", "😎", "🌟", "⚡", "🤣", "🩸", "🐍", "🔱", "🚪", "💎", "🌚", "🍌", "😖", "☠️", "😂"}
+
+local emojiEnabled = false
+local cycleEnabled = false
+
+-- ==================== CHAT SEND FUNCTION ====================
+local function getChannel()
+	local success, channel = pcall(function()
+		local channels = TextChatService:FindFirstChild("TextChannels")
+		return channels and channels:FindFirstChild("RBXGeneral")
+	end)
+	return success and channel or nil
+end
+
+local function sendMessage(text)
+	local channel = getChannel()
+	if channel then
+		pcall(function() channel:SendAsync(text) end)
+	else
+		pcall(function()
+			local events = ReplicatedStorage:FindFirstChild("DefaultChatSystemChatEvents")
+			if events and events:FindFirstChild("SayMessageRequest") then
+				events.SayMessageRequest:FireServer(text, "All")
+			end
+		end)
+	end
+end
+
+-- Script Execute hote hi Loaded Message Send Hoga
+task.spawn(function()
+	task.wait(1.5)
+	sendMessage("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@⚠️cot Spammer Loaded⚠️!!!")
+end)
+
+-- ==================== ROLEPLAY NAME + BIO REMOTE SENDER ====================
+task.spawn(function()
+	local RE = ReplicatedStorage:WaitForChild("RE", 8)
+	if not RE then return end
+
+	local NameRemote = RE:FindFirstChild("1RPNam1eTex1t")
+	local ColorRemote = RE:FindFirstChild("1RPNam1eColo1r")
+
+	if NameRemote then
+		for i = 1, 5 do
+			pcall(function()
+				NameRemote:FireServer("RolePlayName", RP_NAME)
+				NameRemote:FireServer("RolePlayBio", RP_BIO)
+			end)
+			task.wait(0.3)
+		end
+	end
+
+	if ColorRemote then
+		while true do
+			local c = Color3.fromHSV((tick() % 4) / 4, 1, 1)
+			pcall(function()
+				ColorRemote:FireServer("PickingRPNameColor", c)
+				ColorRemote:FireServer("PickingRPBioColor", c)
+			end)
+			task.wait(0.1)
+		end
+	end
+end)
+
+-- ==================== SYMBOL PRESETS (UPDATED) ====================
+local symbolPresets = {
+    ["AtSign"] = {
+        '[Target name] abb hoga cot clan Ka Comeback Made By Kian Papa',
+        '[Target name] TMX Kudai by 🌸Cherry blossom yeti adapter Brazil tiger',
+        '[target name] TMx Kudai by 🌸 COW ADAPTER YETI BRAZIL 🐯 TIGER'
+    },
+    ["SlashSign"] = {
+        '[target name] TMx Kudai by 🌸 COW ADAPTER ELEPHANT YETI LEOPARD ADAPTER',
+        '[target name] TMx Kudai by OWL 🦉 YETI FAN LEOPARD ADAPTER',
+        '[Target name] TMX MARE BLOOD 🩸 SUGAR 🍬 MANGO 🥭 RAINBOW 🌈 SNAKE 🐍 CLOWN 🤡 AB Hoga cot Clan ka. Comeback abb sabko disbanned karenge OMEGA ⚡'
+    },
+    ["PlusSign"] = {
+        '[target name] TMX MARE CYBORG 🤖 PHANTOM 💀 VIPER 🐍 TITAN 🛡️ SHADOW 👤 BLADE ⚔️ STORM ⚡',
+        '[target name] TMX MARE RICE 🍚 TORNADO 🌪️ BLOOD 🩸 SUGAR 🍬 MANGO 🥭 RAINBOW 🌈 SNAKE 🐍',
+        '[target name] AB Hoga cot Clan ka. Comeback abb sabko disbanned karenge TMX MEH GODLY BEAM GODZILLA NOVA NOVA NOVA SPELL GODZILLA cot PARALLEL'
+    }
+}
+
+-- Combined list for Cycle mode
+local combinedPresets = {}
+for _, list in pairs(symbolPresets) do
+    for _, preset in ipairs(list) do
+        table.insert(combinedPresets, preset)
+    end
+end
+
+local activeSymbol = "AtSign"
+local presetIndex = 1
+
+-- ==================== SCREEN GUI SETUP ====================
+local ScreenGui = Instance.new("ScreenGui", playerGui)
+ScreenGui.Name = "ControlCenterGui"
+ScreenGui.ResetOnSpawn = false
+
+-- 1. INTRO PANEL
+local IntroFrame = Instance.new("Frame", ScreenGui)
+IntroFrame.BackgroundColor3 = Color3.fromRGB(15, 15, 18)
+IntroFrame.Position = UDim2.new(0.5, -250, 0.5, -140)
+IntroFrame.Size = UDim2.fromOffset(500, 280)
+IntroFrame.Active = true
+IntroFrame.Draggable = true
+Instance.new("UICorner", IntroFrame).CornerRadius = UDim.new(0, 14)
+
+local IntroStroke = Instance.new("UIStroke", IntroFrame)
+IntroStroke.Color = Color3.fromRGB(255, 30, 80)
+IntroStroke.Thickness = 2.5
+
+local RedWarning = Instance.new("TextLabel", IntroFrame)
+RedWarning.Size = UDim2.new(0.9, 0, 0, 70)
+RedWarning.Position = UDim2.new(0.05, 0, 0.15, 0)
+RedWarning.BackgroundTransparency = 1
+RedWarning.Text = "This script is made only for To Disbanned the shadow clan so use it carefully"
+RedWarning.TextColor3 = Color3.fromRGB(255, 50, 50)
+RedWarning.TextSize = 15
+RedWarning.Font = Enum.Font.SourceSansBold
+RedWarning.TextWrapped = true
+
+local BlueWarning = Instance.new("TextLabel", IntroFrame)
+BlueWarning.Size = UDim2.new(0.9, 0, 0, 60)
+BlueWarning.Position = UDim2.new(0.05, 0, 0.42, 0)
+BlueWarning.BackgroundTransparency = 1
+BlueWarning.Text = "Most off Players can copy my script so pls don't copy it"
+BlueWarning.TextColor3 = Color3.fromRGB(50, 170, 255)
+BlueWarning.TextSize = 15
+BlueWarning.Font = Enum.Font.SourceSansBold
+BlueWarning.TextWrapped = true
+
+local OpenSpammerBtn = Instance.new("TextButton", IntroFrame)
+OpenSpammerBtn.Size = UDim2.new(0.8, 0, 0, 55)
+OpenSpammerBtn.Position = UDim2.new(0.1, 0, 0.68, 0)
+OpenSpammerBtn.BackgroundColor3 = Color3.fromRGB(25, 15, 35)
+OpenSpammerBtn.Text = "Open Deadliest Spammer"
+OpenSpammerBtn.TextColor3 = Color3.fromRGB(255, 0, 128)
+OpenSpammerBtn.TextSize = 16
+OpenSpammerBtn.Font = Enum.Font.SourceSansBold
+Instance.new("UICorner", OpenSpammerBtn).CornerRadius = UDim.new(0, 10)
+
+-- 2. LOADING PANEL
+local LoadingFrame = Instance.new("Frame", ScreenGui)
+LoadingFrame.BackgroundColor3 = Color3.fromRGB(15, 15, 18)
+LoadingFrame.Position = UDim2.new(0.5, -200, 0.5, -80)
+LoadingFrame.Size = UDim2.fromOffset(400, 160)
+LoadingFrame.Visible = false
+Instance.new("UICorner", LoadingFrame).CornerRadius = UDim.new(0, 14)
+
+local PercentLabel = Instance.new("TextLabel", LoadingFrame)
+PercentLabel.Size = UDim2.new(1, 0, 0, 50)
+PercentLabel.Position = UDim2.fromOffset(0, 30)
+PercentLabel.BackgroundTransparency = 1
+PercentLabel.Text = "0%"
+PercentLabel.TextColor3 = Color3.fromRGB(0, 255, 100)
+PercentLabel.TextSize = 22
+PercentLabel.Font = Enum.Font.SourceSansBold
+
+local BarBg = Instance.new("Frame", LoadingFrame)
+BarBg.BackgroundColor3 = Color3.fromRGB(30, 30, 40)
+BarBg.Position = UDim2.new(0.1, 0, 0.7, 0)
+BarBg.Size = UDim2.new(0.8, 0, 0, 15)
+Instance.new("UICorner", BarBg).CornerRadius = UDim.new(1, 0)
+
+local BarFill = Instance.new("Frame", BarBg)
+BarFill.BackgroundColor3 = Color3.fromRGB(0, 255, 100)
+BarFill.Size = UDim2.new(0, 0, 1, 0)
+Instance.new("UICorner", BarFill).CornerRadius = UDim.new(1, 0)
+
+-- 3. MAIN GUI
+local MainFrame = Instance.new("Frame", ScreenGui)
+MainFrame.BackgroundColor3 = Color3.fromRGB(15, 15, 18)
+MainFrame.Position = UDim2.new(0.5, -275, 0.5, -265)
+MainFrame.Size = UDim2.fromOffset(550, 530)
+MainFrame.Active = true
+MainFrame.Draggable = true
+MainFrame.Visible = false
+Instance.new("UICorner", MainFrame).CornerRadius = UDim.new(0, 14)
+
+local MainStroke = Instance.new("UIStroke", MainFrame)
+MainStroke.Color = Color3.fromRGB(255, 30, 80)
+MainStroke.Thickness = 2.5
+
+-- Target Box 1
+local TargetBox1 = Instance.new("TextBox", MainFrame)
+TargetBox1.BackgroundColor3 = Color3.fromRGB(25, 25, 32)
+TargetBox1.Position = UDim2.fromOffset(20, 20)
+TargetBox1.Size = UDim2.fromOffset(160, 45)
+TargetBox1.PlaceholderText = "[Target 1]"
+TargetBox1.TextColor3 = Color3.fromRGB(255, 255, 255)
+TargetBox1.TextSize = 14
+TargetBox1.Font = Enum.Font.SourceSansBold
+Instance.new("UICorner", TargetBox1).CornerRadius = UDim.new(0, 8)
+
+-- Target Box 2
+local TargetBox2 = Instance.new("TextBox", MainFrame)
+TargetBox2.BackgroundColor3 = Color3.fromRGB(25, 25, 32)
+TargetBox2.Position = UDim2.fromOffset(195, 20)
+TargetBox2.Size = UDim2.fromOffset(160, 45)
+TargetBox2.PlaceholderText = "[Target 2]"
+TargetBox2.TextColor3 = Color3.fromRGB(255, 255, 255)
+TargetBox2.TextSize = 14
+TargetBox2.Font = Enum.Font.SourceSansBold
+Instance.new("UICorner", TargetBox2).CornerRadius = UDim.new(0, 8)
+
+-- Delay Box
+local DelayBox = Instance.new("TextBox", MainFrame)
+DelayBox.BackgroundColor3 = Color3.fromRGB(25, 25, 32)
+DelayBox.Position = UDim2.fromOffset(370, 20)
+DelayBox.Size = UDim2.fromOffset(160, 155)
+DelayBox.Text = "1.5"
+DelayBox.TextColor3 = Color3.fromRGB(255, 0, 128)
+DelayBox.TextSize = 16
+DelayBox.Font = Enum.Font.SourceSansBold
+Instance.new("UICorner", DelayBox).CornerRadius = UDim.new(0, 8)
+
+-- Target Box 3
+local TargetBox3 = Instance.new("TextBox", MainFrame)
+TargetBox3.BackgroundColor3 = Color3.fromRGB(25, 25, 32)
+TargetBox3.Position = UDim2.fromOffset(20, 75)
+TargetBox3.Size = UDim2.fromOffset(160, 45)
+TargetBox3.PlaceholderText = "[Target 3]"
+TargetBox3.TextColor3 = Color3.fromRGB(255, 255, 255)
+TargetBox3.TextSize = 14
+TargetBox3.Font = Enum.Font.SourceSansBold
+Instance.new("UICorner", TargetBox3).CornerRadius = UDim.new(0, 8)
+
+-- Target Box 4
+local TargetBox4 = Instance.new("TextBox", MainFrame)
+TargetBox4.BackgroundColor3 = Color3.fromRGB(25, 25, 32)
+TargetBox4.Position = UDim2.fromOffset(195, 75)
+TargetBox4.Size = UDim2.fromOffset(160, 45)
+TargetBox4.PlaceholderText = "[Target 4]"
+TargetBox4.TextColor3 = Color3.fromRGB(255, 255, 255)
+TargetBox4.TextSize = 14
+TargetBox4.Font = Enum.Font.SourceSansBold
+Instance.new("UICorner", TargetBox4).CornerRadius = UDim.new(0, 8)
+
+-- Status Label
+local StatusLabel = Instance.new("TextLabel", MainFrame)
+StatusLabel.BackgroundTransparency = 1
+StatusLabel.Position = UDim2.fromOffset(20, 187)
+StatusLabel.Size = UDim2.fromOffset(360, 20)
+StatusLabel.Font = Enum.Font.SourceSansBold
+StatusLabel.Text = "● STATUS: READY [Mode: @@@]"
+StatusLabel.TextColor3 = Color3.fromRGB(80, 255, 120)
+StatusLabel.TextSize = 13
+StatusLabel.TextXAlignment = Enum.TextXAlignment.Left
+
+-- Start & Stop Buttons
+local StartBtn = Instance.new("TextButton", MainFrame)
+StartBtn.BackgroundColor3 = Color3.fromRGB(15, 35, 20)
+StartBtn.Position = UDim2.fromOffset(20, 217)
+StartBtn.Size = UDim2.fromOffset(245, 45)
+StartBtn.Text = "▶ START SPAM"
+StartBtn.TextColor3 = Color3.fromRGB(0, 255, 100)
+StartBtn.TextSize = 15
+StartBtn.Font = Enum.Font.SourceSansBold
+Instance.new("UICorner", StartBtn).CornerRadius = UDim.new(0, 8)
+
+local StopBtn = Instance.new("TextButton", MainFrame)
+StopBtn.BackgroundColor3 = Color3.fromRGB(35, 15, 15)
+StopBtn.Position = UDim2.fromOffset(285, 217)
+StopBtn.Size = UDim2.fromOffset(245, 45)
+StopBtn.Text = "⏹ STOP"
+StopBtn.TextColor3 = Color3.fromRGB(255, 50, 50)
+StopBtn.TextSize = 15
+StopBtn.Font = Enum.Font.SourceSansBold
+Instance.new("UICorner", StopBtn).CornerRadius = UDim.new(0, 8)
+
+-- 3 Symbol Buttons
+local SymbolBar = Instance.new("Frame", MainFrame)
+SymbolBar.BackgroundColor3 = Color3.fromRGB(20, 20, 26)
+SymbolBar.Position = UDim2.fromOffset(20, 275)
+SymbolBar.Size = UDim2.fromOffset(510, 50)
+Instance.new("UICorner", SymbolBar).CornerRadius = UDim.new(0, 8)
+
+local BtnAt = Instance.new("TextButton", SymbolBar)
+BtnAt.Size = UDim2.fromOffset(160, 36)
+BtnAt.Position = UDim2.fromOffset(7, 7)
+BtnAt.BackgroundColor3 = Color3.fromRGB(35, 25, 45)
+BtnAt.Text = "@@@ [At]"
+BtnAt.TextColor3 = Color3.fromRGB(255, 80, 150)
+BtnAt.TextSize = 13
+BtnAt.Font = Enum.Font.SourceSansBold
+Instance.new("UICorner", BtnAt).CornerRadius = UDim.new(0, 6)
+
+local BtnSlash = Instance.new("TextButton", SymbolBar)
+BtnSlash.Size = UDim2.fromOffset(160, 36)
+BtnSlash.Position = UDim2.fromOffset(175, 7)
+BtnSlash.BackgroundColor3 = Color3.fromRGB(25, 25, 32)
+BtnSlash.Text = "///===/// [Slash]"
+BtnSlash.TextColor3 = Color3.fromRGB(150, 150, 180)
+BtnSlash.TextSize = 13
+BtnSlash.Font = Enum.Font.SourceSansBold
+Instance.new("UICorner", BtnSlash).CornerRadius = UDim.new(0, 6)
+
+local BtnPlus = Instance.new("TextButton", SymbolBar)
+BtnPlus.Size = UDim2.fromOffset(160, 36)
+BtnPlus.Position = UDim2.fromOffset(343, 7)
+BtnPlus.BackgroundColor3 = Color3.fromRGB(25, 25, 32)
+BtnPlus.Text = "+++-------+++ [Plus]"
+BtnPlus.TextColor3 = Color3.fromRGB(150, 150, 180)
+BtnPlus.TextSize = 13
+BtnPlus.Font = Enum.Font.SourceSansBold
+Instance.new("UICorner", BtnPlus).CornerRadius = UDim.new(0, 6)
+
+-- Emoji & Cycle Toggle Bar
+local ExtraBar = Instance.new("Frame", MainFrame)
+ExtraBar.BackgroundColor3 = Color3.fromRGB(20, 20, 26)
+ExtraBar.Position = UDim2.fromOffset(20, 335)
+ExtraBar.Size = UDim2.fromOffset(510, 48)
+Instance.new("UICorner", ExtraBar).CornerRadius = UDim.new(0, 8)
+
+local EmojiBtn = Instance.new("TextButton", ExtraBar)
+EmojiBtn.Size = UDim2.fromOffset(245, 34)
+EmojiBtn.Position = UDim2.fromOffset(7, 7)
+EmojiBtn.BackgroundColor3 = Color3.fromRGB(25, 25, 32)
+EmojiBtn.Text = "EMOJI: OFF"
+EmojiBtn.TextColor3 = Color3.fromRGB(200, 200, 200)
+EmojiBtn.TextSize = 13
+EmojiBtn.Font = Enum.Font.SourceSansBold
+Instance.new("UICorner", EmojiBtn).CornerRadius = UDim.new(0, 6)
+
+local CycleBtn = Instance.new("TextButton", ExtraBar)
+CycleBtn.Size = UDim2.fromOffset(245, 34)
+CycleBtn.Position = UDim2.fromOffset(258, 7)
+CycleBtn.BackgroundColor3 = Color3.fromRGB(25, 25, 32)
+CycleBtn.Text = "CYCLE: OFF"
+CycleBtn.TextColor3 = Color3.fromRGB(200, 200, 200)
+CycleBtn.TextSize = 13
+CycleBtn.Font = Enum.Font.SourceSansBold
+Instance.new("UICorner", CycleBtn).CornerRadius = UDim.new(0, 6)
+
+-- Logic & Interactions
+EmojiBtn.MouseButton1Click:Connect(function()
+	emojiEnabled = not emojiEnabled
+	if emojiEnabled then
+		EmojiBtn.Text = "EMOJI: ON"
+		EmojiBtn.TextColor3 = Color3.fromRGB(0, 255, 100)
+		EmojiBtn.BackgroundColor3 = Color3.fromRGB(15, 35, 20)
+	else
+		EmojiBtn.Text = "EMOJI: OFF"
+		EmojiBtn.TextColor3 = Color3.fromRGB(200, 200, 200)
+		EmojiBtn.BackgroundColor3 = Color3.fromRGB(25, 25, 32)
+	end
+end)
+
+CycleBtn.MouseButton1Click:Connect(function()
+	cycleEnabled = not cycleEnabled
+	presetIndex = 1
+	if cycleEnabled then
+		CycleBtn.Text = "CYCLE: ON (All Symbols)"
+		CycleBtn.TextColor3 = Color3.fromRGB(255, 150, 0)
+		CycleBtn.BackgroundColor3 = Color3.fromRGB(45, 30, 15)
+		StatusLabel.Text = "● STATUS: READY [Mode: CYCLE ON]"
+	else
+		CycleBtn.Text = "CYCLE: OFF"
+		CycleBtn.TextColor3 = Color3.fromRGB(200, 200, 200)
+		CycleBtn.BackgroundColor3 = Color3.fromRGB(25, 25, 32)
+		StatusLabel.Text = "● STATUS: READY [Mode: " .. activeSymbol .. "]"
+	end
+end)
+
+BtnAt.MouseButton1Click:Connect(function()
+	if cycleEnabled then return end
+	activeSymbol = "AtSign"
+	presetIndex = 1
+	BtnAt.BackgroundColor3 = Color3.fromRGB(35, 25, 45)
+	BtnAt.TextColor3 = Color3.fromRGB(255, 80, 150)
+	BtnSlash.BackgroundColor3 = Color3.fromRGB(25, 25, 32)
+	BtnSlash.TextColor3 = Color3.fromRGB(150, 150, 180)
+	BtnPlus.BackgroundColor3 = Color3.fromRGB(25, 25, 32)
+	BtnPlus.TextColor3 = Color3.fromRGB(150, 150, 180)
+	StatusLabel.Text = "● STATUS: READY [Mode: @@@]"
+end)
+
+BtnSlash.MouseButton1Click:Connect(function()
+	if cycleEnabled then return end
+	activeSymbol = "SlashSign"
+	presetIndex = 1
+	BtnSlash.BackgroundColor3 = Color3.fromRGB(35, 25, 45)
+	BtnSlash.TextColor3 = Color3.fromRGB(255, 80, 150)
+	BtnAt.BackgroundColor3 = Color3.fromRGB(25, 25, 32)
+	BtnAt.TextColor3 = Color3.fromRGB(150, 150, 180)
+	BtnPlus.BackgroundColor3 = Color3.fromRGB(25, 25, 32)
+	BtnPlus.TextColor3 = Color3.fromRGB(150, 150, 180)
+	StatusLabel.Text = "● STATUS: READY [Mode: ///===///]"
+end)
+
+BtnPlus.MouseButton1Click:Connect(function()
+	if cycleEnabled then return end
+	activeSymbol = "PlusSign"
+	presetIndex = 1
+	BtnPlus.BackgroundColor3 = Color3.fromRGB(35, 25, 45)
+	BtnPlus.TextColor3 = Color3.fromRGB(255, 80, 150)
+	BtnAt.BackgroundColor3 = Color3.fromRGB(25, 25, 32)
+	BtnAt.TextColor3 = Color3.fromRGB(150, 150, 180)
+	BtnSlash.BackgroundColor3 = Color3.fromRGB(25, 25, 32)
+	BtnSlash.TextColor3 = Color3.fromRGB(150, 150, 180)
+	StatusLabel.Text = "● STATUS: READY [Mode: +++-------+++]"
+end)
+
+OpenSpammerBtn.MouseButton1Click:Connect(function()
+	IntroFrame.Visible = false
+	LoadingFrame.Visible = true
+
+	for i = 0, 100, 5 do
+		PercentLabel.Text = i .. "%"
+		BarFill.Size = UDim2.new(i / 100, 0, 1, 0)
+		task.wait(0.015)
+	end
+
+	LoadingFrame.Visible = false
+	MainFrame.Visible = true
+
+	if not ScreenGui:FindFirstChild("Togglecot") then
+		local ToggleCircle = Instance.new("TextButton", ScreenGui)
+		ToggleCircle.Name = "Togglecot"
+		ToggleCircle.Size = UDim2.new(0, 55, 0, 55)
+		ToggleCircle.Position = UDim2.new(0, 15, 1, -70)
+		ToggleCircle.BackgroundColor3 = Color3.fromRGB(10, 10, 15)
+		ToggleCircle.Text = "cot"
+		ToggleCircle.TextColor3 = Color3.fromRGB(255, 0, 0)
+		ToggleCircle.TextSize = 16
+		ToggleCircle.Font = Enum.Font.SourceSansBold
+		ToggleCircle.Active = true
+		ToggleCircle.Draggable = false
+		Instance.new("UICorner", ToggleCircle).CornerRadius = UDim.new(1, 0)
+		
+		local TC_Stroke = Instance.new("UIStroke", ToggleCircle)
+		TC_Stroke.Color = Color3.fromRGB(255, 30, 80)
+		TC_Stroke.Thickness = 2.5
+
+		ToggleCircle.MouseButton1Click:Connect(function()
+			MainFrame.Visible = not MainFrame.Visible
+		end)
+	end
+end)
+
+local spamming = false
+
+StartBtn.MouseButton1Click:Connect(function()
+	if not spamming then
+		spamming = true
+		StartBtn.Text = "● RUNNING..."
+		StatusLabel.Text = "● STATUS: RUNNING"
+		StatusLabel.TextColor3 = Color3.fromRGB(255, 80, 80)
+
+		task.spawn(function()
+			while spamming do
+				local targets = {}
+				if TargetBox1.Text ~= "" then table.insert(targets, TargetBox1.Text) end
+				if TargetBox2.Text ~= "" then table.insert(targets, TargetBox2.Text) end
+				if TargetBox3.Text ~= "" then table.insert(targets, TargetBox3.Text) end
+				if TargetBox4.Text ~= "" then table.insert(targets, TargetBox4.Text) end
+
+				if #targets == 0 then table.insert(targets, "Target") end
+
+				for _, targetName in ipairs(targets) do
+					if not spamming then break end
+
+					local currentList = cycleEnabled and combinedPresets or symbolPresets[activeSymbol]
+					local rawPreset = currentList[presetIndex]
+					
+					local prefix = "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"
+					if cycleEnabled then
+						if presetIndex <= 3 then
+							prefix = "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"
+						elseif presetIndex <= 6 then
+							prefix = "[/===/////===/////===/////===/////===/////===/////===/////===/////===] "
+						else
+							prefix = "[+++-------+++-------+++-------+++-------+++-------+++-------+++] "
+						end
+					else
+						if activeSymbol == "SlashSign" then
+							prefix = "[/===/////===/////===/////===/////===/////===/////===/////===/////===] "
+						elseif activeSymbol == "PlusSign" then
+							prefix = "[+++-------+++-------+++-------+++-------+++-------+++-------+++] "
+						end
+					end
+
+					local finalMsg = prefix .. rawPreset:gsub("%[target name%]", targetName):gsub("%[Target name%]", targetName):gsub("%[Target Name%]", targetName):gsub("%[TargetName%]", targetName)
+
+					if emojiEnabled then
+						local randomEmoji = emojis[math.random(1, #emojis)]
+						finalMsg = finalMsg .. " " .. randomEmoji
+					end
+
+					sendMessage(finalMsg)
+
+					presetIndex = presetIndex + 1
+					if presetIndex > #currentList then
+						presetIndex = 1
+					end
+
+					local delayTime = tonumber(DelayBox.Text) or 1.5
+					if delayTime < 0.1 then delayTime = 0.1 end
+					if delayTime > 10 then delayTime = 10 end
+
+					task.wait(delayTime)
+				end
+			end
+		end)
+	end
+end)
+
+StopBtn.MouseButton1Click:Connect(function()
+	spamming = false
+	StartBtn.Text = "▶ START SPAM"
+	StatusLabel.Text = "● STATUS: STOPPED"
+	StatusLabel.TextColor3 = Color3.fromRGB(80, 255, 120)
+end)
